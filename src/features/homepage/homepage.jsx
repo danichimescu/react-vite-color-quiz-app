@@ -12,19 +12,19 @@ import styles from '../mystyles.module.css';
 export function Homepage() {
     return (
         <>
-            <div className={styles.body}>
+            <div className={styles.bodyHome}>
                 <div className={styles.container}>
-                    <h1>Welcome to the page for homework!</h1>
+                    <h1>Welcome to homework page!</h1>
 
-                    <button onClick={() => window.location.href = apiUrl + "colorpicker"} >Go to Color Picker</button>
+                    <button onClick={() => window.location.href = apiUrl + "colorpicker"} >Color Picker</button>
 
-                    <button onClick={() => window.location.href = apiUrl + "gradient"} >Go to Gradient</button>
+                    <button onClick={() => window.location.href = apiUrl + "gradient"} >Gradient</button>
                     
-                    <button onClick={() => window.location.href = apiUrl + "simpleform"} >Go to Simple form</button>
+                    <button onClick={() => window.location.href = apiUrl + "simpleform"} >Simple form with submit button</button>
+
+                    <button onClick={() => window.location.href = apiUrl + "quiz"} >Go to Quiz</button>
+
                     
-                    <button>Go to Simple form with submit button</button>
-                    <button>Go to Another Feature</button>
-                    <button>Go to Quiz</button>
                 </div>
             </div>
         </>

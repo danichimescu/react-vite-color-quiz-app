@@ -1,6 +1,6 @@
 // import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
+import viteLogo from '/vite.svg'
 // import './App.css'
 
 import { BrowserRouter, Route, Routes } from "react-router";
@@ -8,6 +8,7 @@ import { ColorPicker } from "./features/colorpicker/ColorPicker";
 import { Homepage } from "./features/homepage/Homepage";
 import { Gradient } from "./features/gradient/Gradient";
 import { SimpleForm } from "./features/simpleform/Simpleform";
+import { Quiz } from "./features/quiz/Quiz";
 
 // import { useNavigate } from "react-router-dom";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="colorpicker" element={<ColorPicker />} />
         <Route path="gradient" element={<Gradient />} />
         <Route path="simpleform" element={<SimpleForm />} />
+        <Route path="quiz" element={<Quiz />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </BrowserRouter>

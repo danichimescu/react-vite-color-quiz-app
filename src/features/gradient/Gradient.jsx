@@ -11,7 +11,7 @@ export function Gradient() {
     return (
         <>
         <button onClick={() => window.location.href = "/"} >Home</button>
-            <div className={styles.body}>
+            <div className={styles.bodyHome}>
                 <div className={styles.container}>
                     <h2>Colors Picker for gradient</h2>
                     <div className={styles.boxBig} style={{ background: `linear-gradient(to right, ${color1}, ${color2})` }}>

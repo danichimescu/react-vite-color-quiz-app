@@ -18,7 +18,7 @@ export function ColorPicker() {
     return (
         <>
          <button onClick={() => window.location.href = "/"} >Home</button>
-            <div className={styles.body}>
+            <div className={styles.bodyColorpicker}>
                 <div className={styles.container}>
                     <h2>Color Picker</h2>
                     <div className={styles.boxBig} style={{backgroundColor: color}}>  

@@ -76,7 +76,7 @@ export function SimpleForm() {
         // console.log('Submitted email:', submit_email);
 
         if (submit_firstname.length < 2) {
-            // alert('First name must be at least 2 characters long!');
+            // alert('First name must be at least 2 characters long!');  
             const newErrorMessage = 'First name must be at least 2 characters long!';
             setErrorMessage(newErrorMessage);
             return;
@@ -94,6 +94,12 @@ export function SimpleForm() {
             // alert('Please enter a valid email address!');
             return;
         }
+        if (submit_password.length < 4) {
+            // alert('Passwords do not match!');
+            const newErrorMessage = 'Passwords too short!';
+            setErrorMessage(newErrorMessage);
+            return;
+        }
 
         if (submit_password !== submit_retypepassword) {
             // alert('Passwords do not match!');
@@ -101,6 +107,8 @@ export function SimpleForm() {
             setErrorMessage(newErrorMessage);
             return;
         }
+
+
         const newErrorMessage = 'Form submitted successfully!';
         setErrorMessage(newErrorMessage);
         // alert('Form submitted successfully!')
@@ -112,112 +120,102 @@ export function SimpleForm() {
 
     }
 
-    async function handleSubmitttt(e) {
-        e.preventDefault();
-
-        const form = e.target;
-        const formData = new FormData(form);
-        const todoTitle = formData.get('title');
-
-        try {
-            const newTodo = await fetch(endpoint + 's', {
-                method: 'POST',
-                body: JSON.stringify({
-                    title: todoTitle,
-                    completed: false,
-                }),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }).then(processServerResponse);
-
-            const newTodoList = [...todos, newTodo];
-            setTodos(newTodoList);
-            form.reset();
-        } catch (e) {
-            console.warn(e);
-        }
-    }
-
 
     // style={{ border: '4px solid #bc2121', fontWeight: 'bold' }}
 
     return (
         <>
-            <div className={styles.body}>
-                <form className={styles.container} onSubmit={handleSubmit}>
+            <button onClick={() => window.location.href = "/"} >Home</button>
+            <div className={styles.bodySimpleform}>
+                <div className={styles.containerSimpleform}>
+                    <form className={styles.displayDataSimpleform} onSubmit={handleSubmit}>
 
-                    <label className={clsx({
-                        [styles.errorLabel]: errorMessage && errorMessage.includes('First name')
-                    })}
-                    >
-                        First name:
-                        <input
-                            type="text"
-                            name="firstName"
-                            value={person.firstName}
-                            onChange={handleFirstNameChange}
-                        />
-                    </label>
-                    <label>
-                        Last name:
-                        <input
-                            type="text"
-                            name="lastName"
-                            value={person.lastName}
-                            onChange={handleLastNameChange}
-                        />
-                    </label>
+                        <label className={clsx({
+                            [styles.errorLabel]: errorMessage && errorMessage.includes('First name')
+                        })}
+                        >
+                            First name:{' '}
+                            
+                            <input 
+                                type="text"
+                                name="firstName"
+                                value={person.firstName}
+                                onChange={handleFirstNameChange}
+                            />
+                        </label>
+                        <label className={clsx({
+                            [styles.errorLabel]: errorMessage && errorMessage.includes('Last name')
+                        })}
+                        >
+                            Last name:
+                            <input
+                                type="text"
+                                name="lastName"
+                                value={person.lastName}
+                                onChange={handleLastNameChange}
+                            />
+                        </label>
 
-                    <label htmlFor="gender">Gender</label>
-                    <select id="gender" name="gender" value={person.gender} onChange={handleGenderChange}>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="none">Prefer not to say</option>
-                    </select>
+                        <label htmlFor="gender">Gender</label>
+                        <select id="gender" name="gender" value={person.gender} onChange={handleGenderChange}>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="none">Prefer not to say</option>
+                        </select>
 
-                    <label>
-                        Email:
-                        <input
-                            type="email"
-                            name="email"
-                            value={person.email}
-                            onChange={handleEmailChange}
-                        />
-                    </label>
-                    <label>
-                        Password:
-                        <input
-                            type="password"
-                            name="password"
-                            value={person.password}
-                            onChange={handlePasswordChange}
-                        />
-                    </label>
-                    <label>
-                        Retype Password:
-                        <input
-                            type="password"
-                            name="retypepassword"
-                            value={person.retypepassword}
-                            onChange={handleRetypePasswordChange}
-                        />
-                    </label>
-                    <button type="submit">Submit</button>
-                </form>
-                <div className={styles.displayData}>
-                    <p>
-                        {person.firstName}{', '}
-                        {person.lastName}{', '}
-                        {person.gender}{', '}
-                        {person.email}{' '}
+                        <label className={clsx({
+                            [styles.errorLabel]: errorMessage && errorMessage.includes('email')
+                        })}
+                        >
+                            Email:
+                            <input
+                                type="email"
+                                name="email"
+                                value={person.email}
+                                onChange={handleEmailChange}
+                            />
+                        </label>
+                        <label className={clsx({
+                            [styles.errorLabel]: errorMessage && errorMessage.includes('Passwords too short')
+                        })}
+                        >
+                            Password:
+                            <input
+                                type="password"
+                                name="password"
+                                value={person.password}
+                                onChange={handlePasswordChange}
+                            />
+                        </label>
+                        <label className={clsx({
+                            [styles.errorLabel]: errorMessage && errorMessage.includes('do not match')
+                        })}
+                        >
+                            Retype Password:
+                            <input
+                                type="password"
+                                name="retypepassword"
+                                value={person.retypepassword}
+                                onChange={handleRetypePasswordChange}
+                            />
+                        </label>
+                        <button type="submit">Submit</button>
+                    </form>
+                    <div className={styles.displayDataSimpleform}>
+                        <p>
+                            {person.firstName}{', '}
+                            {person.lastName}{', '}
+                            {person.gender}{', '}
+                            {person.email}{' '}
 
-                    </p>
-                </div>
-                <div className={styles.displayError}>
-                    <p>
-                        {errorMessage}
-                    </p>
+                        </p>
+                    </div>
+                    <div className={styles.displayError}>
+                        <p>
+                            {errorMessage}
+                        </p>
+                    </div>
+
                 </div>
             </div>
         </>

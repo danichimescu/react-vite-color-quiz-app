@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Gigel",
+      "login": true
+    }
+  ],
+  "quiz": [
+    {
+      "myQuestion": "Do you want to learn more react?",
+      "firstAnswer": "I dont know",
+      "secondAnswer": "No",
+      "thirdAnswer": "Maybe",
+      "correctAnswer": "Yes",
+      "completed": false,
+      "id": 6
+    }
+  ]
+}
