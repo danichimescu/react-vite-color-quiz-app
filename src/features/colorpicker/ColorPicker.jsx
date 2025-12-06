@@ -15,6 +15,7 @@ export function ColorPicker() {
     {/* <div style={{ backgroundColor: color, height: '25vh', width: '25vw', alignItems: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: '50px' }}> sssss </div> */ }
 
     // <div style={{backgroundColor: color}}>ceva</div>
+    //<div className={`${styles.boxBig} ${styles.back}`} >
     return (
         <>
          <button onClick={() => window.location.href = "/"} >Home</button>

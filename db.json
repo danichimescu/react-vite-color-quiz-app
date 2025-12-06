@@ -8,13 +8,20 @@
   ],
   "quiz": [
     {
-      "myQuestion": "Do you want to learn more react?",
+      "myQuestion": "Do you want to learn more react??",
       "firstAnswer": "I dont know",
       "secondAnswer": "No",
       "thirdAnswer": "Maybe",
       "correctAnswer": "Yes",
-      "completed": false,
       "id": 6
+    },
+    {
+      "myQuestion": "in ce ",
+      "correctAnswer": "bucu",
+      "firstAnswer": "baca",
+      "secondAnswer": "ba",
+      "thirdAnswer": "bbb",
+      "id": 7
     }
   ]
 }

@@ -8,6 +8,8 @@ const apiUrl = "http://localhost:3000/";
 const endpoint = `${apiUrl}quiz`;
 
 
+
+
 function processServerResponse(res) {
     if (!res.ok) {
         if (res.status === 404) {
@@ -24,6 +26,8 @@ function processServerResponse(res) {
 }
 
 
+
+
 // Fisher-Yates shuffle algorithm
 const shuffleArray = (array) => {
     const shuffled = [...array];
@@ -38,6 +42,7 @@ const shuffleArray = (array) => {
 export function Quiz() {
 
     const [todos, setTodos] = useState(null);
+    const [quizResults, setQuizResults] = useState(null);
 
     // READ/RETRIEVE
     useEffect(() => {
@@ -55,22 +60,22 @@ export function Quiz() {
         const form = e.target;
         const formData = new FormData(form);
         const mainQuestion = formData.get('myQuestion');
-        const correctAnswer = formData.get('correctanswer');
+        const correctAnswer = formData.get('correctAnswer');
         const firstAnswer = formData.get('firstAnswer');//"Paris";
         const secondAnswer = formData.get('secondAnswer');//"Rome";
         const thirdAnswer = formData.get('thirdAnswer');//"Madrid";
-       
+
+
 
         try {
             const newTodo = await fetch(endpoint, { // + 's'
                 method: 'POST',
                 body: JSON.stringify({
                     myQuestion: mainQuestion,
-                    correctanswer: correctAnswer,
+                    correctAnswer: correctAnswer,
                     firstAnswer: firstAnswer,
                     secondAnswer: secondAnswer,
-                    thirdAnswer: thirdAnswer,
-                    completed: false,
+                    thirdAnswer: thirdAnswer
                 }),
                 headers: {
                     'Content-Type': 'application/json',
@@ -84,7 +89,41 @@ export function Quiz() {
             console.warn(e);
         }
     }
+    async function handleQuizSubmit(e) {
+        e.preventDefault();
 
+        let score = 0;
+        const form = e.target;
+        const formData = new FormData(form);
+        const results = [];
+        let isCorrect = false;
+
+
+        todos.forEach((todo) => {
+            const selectedAnswer = formData.get(`q${todo.id}`);
+            if (selectedAnswer === todo.correctAnswer) {
+                score++;
+                isCorrect = true;
+            } else {
+                isCorrect = false;
+            }
+            results.push({
+                question: todo.myQuestion,
+                selectedAnswer: selectedAnswer,
+                correctAnswer: todo.correctAnswer,
+                isCorrect: isCorrect
+            });
+        });
+
+        setQuizResults({
+            score: score,
+            total: todos.length,
+            answers: results
+        });
+
+
+        alert(`Quiz submitted! Your score: ${score} out of ${todos.length}`);
+    }
     // DELETE
     async function handleDeleteTodo(todo) {
         // console.log(e.target.dataset.todoId);
@@ -121,65 +160,111 @@ export function Quiz() {
         <>
             <button onClick={() => window.location.href = "/"} >Home</button>
             <div className={styles.body}>
-                
-                    <h1>Create a quiz</h1>
-                    <div className={styles.generator}>
-                        <form onSubmit={handleSubmit}>
-                            <div className={styles.form_group}>
-                                <label htmlFor="myQuestion">Create a quiz question</label>{' '}
-                                <input type="text" id="myQuestion" name="myQuestion" />
-                            </div>
-                            <div className={styles.form_group}>
-                                <label htmlFor="correctAnswer">Create a quiz correct answer</label>{' '}
-                                <input type="text" id="correctAnswer" name="correctAnswer" />
-                            </div>
-                            <div className={styles.form_group}>
-                                <label htmlFor="firstAnswer">Create first wrong answer</label>{' '}
-                                <input type="text" id="firstAnswer" name="firstAnswer" />
-                            </div>
-                            <div className={styles.form_group}>
-                                <label htmlFor="secondAnswer">Create second wrong answer</label>{' '}
-                                <input type="text" id="secondAnswer" name="secondAnswer" />
-                            </div>
-                            <div className={styles.form_group}>
-                                <label htmlFor="thirdAnswer">Create third wrong answer</label>{' '}
-                                <input type="text" id="thirdAnswer" name="thirdAnswer" />
-                            </div>
-                            <button type="submit">Add question</button>
-                        </form>
-                    </div>
-
-
-                    {!todos && <strong>Loading ...</strong>}
-                    {todos && (
-                        <div className={styles.quiz}>
-
-                            {todos.map((todo) => (
-                                <ol>
-                                    <li key={todo.id}>
-
-
-                                        <div>
-                                            <div className={styles.question} >{todo.myQuestion}</div>
-                                            <div className={styles.answers}>
-                                                <label><input type="radio" name="q1" /> {todo.correctAnswer}</label>
-                                                <label><input type="radio" name="q1" /> {todo.secondAnswer}</label>
-                                                <label><input type="radio" name="q1" /> {todo.thirdAnswer}</label>
-                                                <label><input type="radio" name="q1" /> {todo.firstAnswer}</label>
-                                            </div>
-                                        </div>
-
-
-
-                                    </li>
-                                </ol>
-
-                            ))}
-
+                {/* quiz creation page */}
+                <h1>Create a quiz</h1>
+                <div className={styles.generator}>
+                    <form onSubmit={handleSubmit}>
+                        <div className={styles.form_group}>
+                            <label htmlFor="myQuestion">Create a quiz question</label>{' '}
+                            <input type="text" id="myQuestion" name="myQuestion" />
                         </div>
-                    )}
-                    <button>Submit Quiz</button>
-                
+                        <div className={styles.form_group}>
+                            <label htmlFor="correctAnswer">Create a quiz correct answer</label>{' '}
+                            <input type="text" id="correctAnswer" name="correctAnswer" />
+                        </div>
+                        <div className={styles.form_group}>
+                            <label htmlFor="firstAnswer">Create first wrong answer</label>{' '}
+                            <input type="text" id="firstAnswer" name="firstAnswer" />
+                        </div>
+                        <div className={styles.form_group}>
+                            <label htmlFor="secondAnswer">Create second wrong answer</label>{' '}
+                            <input type="text" id="secondAnswer" name="secondAnswer" />
+                        </div>
+                        <div className={styles.form_group}>
+                            <label htmlFor="thirdAnswer">Create third wrong answer</label>{' '}
+                            <input type="text" id="thirdAnswer" name="thirdAnswer" />
+                        </div>
+                        <button type="submit">Add question</button>
+                    </form>
+                </div>
+
+                {/* asta e conditional rendering !!! */}
+                {!todos && <strong>Loading ...</strong>}
+                {todos && (
+                    <form onSubmit={handleQuizSubmit}>
+                        <div className={styles.quiz}>
+                            <ol >
+                                {todos.map((todo) => {
+                                    // Shuffle answers for each question
+                                    const answers = shuffleArray([
+                                        todo.correctAnswer,
+                                        todo.firstAnswer,
+                                        todo.secondAnswer,
+                                        todo.thirdAnswer
+                                    ]);
+
+                                    return (
+                                        <li key={todo.id}>
+                                            <div>
+                                                <div className={styles.question}>{todo.myQuestion}</div>
+                                                <div className={styles.answers}>
+                                                    {answers.map((answer, index) => (
+                                                        <label key={index}>
+                                                            <input type="radio" name={`q${todo.id}`} value={answer} /> {answer}
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleDeleteTodo(todo)}
+                                                >
+                                                    Delete Question
+                                                </button>
+                                            </div>
+                                        </li>
+
+                                    );
+                                })}
+                            </ol>
+                        </div>
+                        <button type="submit">Submit Quiz</button>
+                    </form>
+                )}
+                {/* <div>this is your result</div> */}
+                {/* asta e conditional rendering of quiz results!!! */}
+                {quizResults && (
+                    <div className={styles.results}>
+                        <h2>Quiz Results</h2>
+                        <div className={styles.score}>
+                            <strong>Your Score: {quizResults.score} out of {quizResults.total}</strong>
+                            <span> ({Math.round((quizResults.score / quizResults.total) * 100)}%)</span>
+                        </div>
+
+                        <div className={styles.answers_review}>
+                            <h3>Answer Review:</h3>
+                            <ol>
+                                {quizResults.answers.map((result, index) => (
+                                    <li key={index} className={result.isCorrect ? styles.correct : styles.incorrect}>
+                                        <div className={styles.question}>{result.question}</div>
+                                        <div>
+                                            <strong>Your answer:</strong> {result.selectedAnswer || "Not answered"}
+                                            {result.isCorrect ? " ✓" : " ✗"}
+                                        </div>
+                                        {!result.isCorrect && (
+                                            <div>
+                                                <strong>Correct answer:</strong> {result.correctAnswer}
+                                            </div>
+                                        )}
+                                    </li>
+                                ))}
+                            </ol>
+                        </div>
+
+                        <button type="button" onClick={() => setQuizResults(null)}>
+                            Retake Quiz
+                        </button>
+                    </div>
+                )}
             </div>
         </>
     );
